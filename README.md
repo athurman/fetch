@@ -1,7 +1,5 @@
 fetch
 =====
-## Overview ##
-
 fetch helps you find the right dog for your lifestyle, and searches for Fido based on your location. After being asked a series of questions, the top 5 dog breeds for your lifestyle will be listed.  With the input of your zipcode fetch will then search for dogs similar to your top 5 in local adoption centers and shelters.
 
 ## Project Requirements ##
