@@ -43,30 +43,30 @@ Acceptance Criteria:
 
 ## Create a Dog ##
 ```
-Usage: ./fetchdog create "Breed Name" "Size" "Life Span" "Weight" "Height" "Group" "Special Needs"
+Usage: ./fetchdog create "Breed Name" "Shelter Name" "Name" "Age" "Weight" "Status"
 
 Acceptance Criteria:
-* Creates a new record of a dog, using each string as a piece of information
-* 5 arguments are required
+* Creates a new record of a shelter dog, using each string as a piece of information
+* all arguments are required
 ```
 
 ## Update Dog ##
 ```
-Usage: ./fetchdog update "Breed"
+Usage: ./fetchdog update "Dog Name"
 
 Acceptance Criteria:
-* Finds dog by breed name and lists breed information
+* Finds shelter dog by name and lists information
 * Prompts user to select the piece of info they would like to update
 * User inputs the information they would like to update
-* Dog breed profile updates
+* Shelter dog profile updates
 ```
 
 ## Delete Dog ##
 ```
-Usage: ./fetchdog delete "Breed"
+Usage: ./fetchdog delete "Dog Name"
 
 Acceptance Criteria:
-* Finds dog by breed name
-* If no breed is found lists names of breeds similar to the input
+* Finds dog by name
+* If no dog is found informs user and asks them to try again
 * Deletes dog from database
 ```
