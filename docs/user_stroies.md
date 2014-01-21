@@ -47,7 +47,8 @@ Usage: ./fetchdog create "Breed Name" "Shelter Name" "Name" "Age" "Weight" "Stat
 
 Acceptance Criteria:
 * Creates a new record of a shelter dog, using each string as a piece of information
-* all arguments are required
+* prints summary of new dog
+* all arguments are required, if one or more argument is missing prints error message
 ```
 
 ## Update Dog ##
