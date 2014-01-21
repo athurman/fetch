@@ -43,7 +43,7 @@ Acceptance Criteria:
 
 ## Create a Dog ##
 ```
-Usage: ./fetchdog create "Breed Name" "Shelter Name" "Name" "Age" "Weight" "Status"
+Usage: ./fetchdog create "Name" "Breed Name" "Shelter Name" "Age" "Weight" "Status"
 
 Acceptance Criteria:
 * Creates a new record of a shelter dog, using each string as a piece of information
