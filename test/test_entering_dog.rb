@@ -38,7 +38,7 @@ class TestEnteringDog < Minitest::Unit::TestCase
 
   def test_error_message_for_missing_name
     result = "./fetchdog add"
-    expected = "You must provide the name of the dog you are adding."
+    expected = "You must provide the name of the dog you are adding.\nYou must provide the breed and shelter and age and weight and status of the dog you are adding."
     assert_command_output expected, result
   end
 end

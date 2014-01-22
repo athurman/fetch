@@ -1,50 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
+require_relative 'lib/parse_arguments.rb'
 
 command = ARGV[0]
-dog_name = ARGV[1]
-options = {}
+options = ParseArguments.parse
+options[:dog_name] = ARGV[1]
+error_messages = ParseArguments.validate(options)
 
-OptionParser.new do |opts|
-  opts.banner = "Usage: fetchdog [command] [options]"
-
-  opts.on("-b", "--breed [DOGBREED]", "The dog breed") do |breed|
-    options[:breed] = breed
-  end
-
-  opts.on("-s", "--shelter [SHELTER]", "The shelter name") do |shelter|
-    options[:shelter] = shelter
-  end
-
-  opts.on("-a", "--age [DOGAGE]", "The dog age") do |age|
-    options[:age] = age
-  end
-
-  opts.on("-w", "--weight [DOGWEIGHT]", "The dog weight") do |weight|
-    options[:weight] = weight
-  end
-
-  opts.on("--status [DOGSTATUS]", "The dog status") do |status|
-    options[:status] = status
-  end
-end.parse!
-
-if dog_name.nil? or dog_name.empty?
-  puts "You must provide the name of the dog you are adding."
-  exit
+if error_messages.empty?
+  puts "Theoretically creating: a dog named #{options[:dog_name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with an #{options[:status]} status for adoptable"
+else
+  puts error_messages
 end
-
-missing_things = []
-missing_things << "breed" unless options[:breed]
-missing_things << "shelter" unless options[:shelter]
-missing_things << "age" unless options[:age]
-missing_things << "weight" unless options[:weight]
-missing_things << "status" unless options[:status]
-
-unless missing_things.empty?
-  puts "You must provide the #{missing_things.join(" and ")} of the dog you are adding."
-  exit
-end
-
-puts "Theoretically creating: a dog named #{dog_name}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with an #{options[:status]} status for adoptable"
