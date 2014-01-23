@@ -22,6 +22,9 @@ class ParseArguments
       opts.on("--status [DOGSTATUS]", "The dog status") do |status|
         options[:status] = status
       end
+      opts.on("--environment [ENV]", "The database environment") do |env|
+        options[:environment] = env
+      end
     end.parse!
     options
   end

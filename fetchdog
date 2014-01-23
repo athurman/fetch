@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require_relative 'lib/environment.rb'
 require_relative 'lib/parse_arguments.rb'
 
 command = ARGV[0]
@@ -8,7 +9,12 @@ options[:dog_name] = ARGV[1]
 error_messages = ParseArguments.validate(options)
 
 if error_messages.empty?
-  puts "Theoretically creating: a dog named #{options[:dog_name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with an #{options[:status]} status for adoptable"
+  require "sqlite3"
+  database = Environment.database_connection(options[:environment])
+  # This is ripe for a SQL injection attack:
+  statement = "insert into shelterdogs(name, breed, shelter, age, weight, status) values('#{options[:dog_name]}', '#{options[:breed]}', '#{options[:shelter]}', #{options[:age]}, #{options[:weight]}, '#{options[:status]}')"
+  database.execute(statement)
+  puts "A shelter dog named #{options[:dog_name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
 else
   puts error_messages
 end

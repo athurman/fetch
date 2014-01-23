@@ -1,25 +1,33 @@
 require_relative 'helper'
+require 'sqlite3'
 
-class TestEnteringDog < Minitest::Unit::TestCase
-
-  # Ask about adding a space between "Humane" and "Society" in OptionParser method
+class TestEnteringDog < FetchTest
 
   def test_valid_dog_information_gets_printed
     command = "./fetchdog add Fido --breed Collie --shelter 'Humane Society' --age 2 --weight 85 --status A"
-    expected = "Theoretically creating: a dog named Fido, breed: Collie, shelter: Humane Society, age: 2 weight: 85 lbs. with an A status for adoptable"
+    expected = "A shelter dog named Fido, breed: Collie, shelter: Humane Society, age: 2 weight: 85 lbs. with status of A."
     assert_command_output expected, command
   end
 
   def test_valid_dog_gets_saved
-    skip "needs implementation"
+    `./fetchdog add Fido --breed Collie --shelter 'Humane Society' --age 2 --weight 85 --status A --environment test`
+
+    results = database.execute("select name, breed, shelter, age, weight, status from shelterdogs")
+    expected = ["Fido", "Collie", "Humane Society", 2, 85, "A"]
+    assert_equal expected, results[0]
+
+    result = database.execute("select count(id) from shelterdogs")
+    assert_equal 1, result[0][0]
   end
 
   def test_invalid_dog_does_not_get_saved
-    skip "needs implementation"
+    `./fetchdog add Fido --breed Boxer`
+    result = database.execute("select count(id) from shelterdogs")
+    assert_equal 0, result[0][0]
   end
 
   def test_error_message_for_missing_age
-    result = "./fetchdog add Fido --breed Collie --shelter HumaneSociety"
+    result = "./fetchdog add Fido --breed Collie --shelter 'Humane Society'"
     expected = "You must provide the age and weight and status of the dog you are adding."
     assert_command_output expected, result
   end
