@@ -31,7 +31,7 @@ class ParseArguments
 
   def self.validate options
     errors = []
-    if options[:dog_name].nil? or options[:dog_name].empty?
+    if options[:name].nil? or options[:name].empty?
       errors << "You must provide the name of the dog you are adding.\n"
     end
 
