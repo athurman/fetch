@@ -10,10 +10,10 @@ class TestEnteringDog < FetchTest
   end
 
   def test_valid_dog_gets_saved
-    `./fetchdog add Fido --breed Collie --shelter 'Humane Society' --age 2 --weight 85 --status A --environment test`
+    `./fetchdog add Fido --breed Collie --shelter 'Humane Society' --age young --weight M --status A --environment test`
 
     results = database.execute("select name, breed, shelter, age, weight, status from shelterdogs")
-    expected = ["Fido", "Collie", "Humane Society", 2, 85, "A"]
+    expected = ["Fido", "Collie", "Humane Society", "young", "M", "A"]
     assert_equal expected, results[0]
 
     result = database.execute("select count(id) from shelterdogs")

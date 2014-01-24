@@ -4,7 +4,7 @@ require 'optparse'
 
 class ParseArguments
   def self.parse
-    options = {}
+    options = { environment: "production" }
     OptionParser.new do |opts|
       opts.banner = "Usage: fetchdog [command] [options]"
       opts.on("-b", "--breed [DOGBREED]", "The dog breed") do |breed|
