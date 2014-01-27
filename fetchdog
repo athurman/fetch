@@ -11,10 +11,17 @@ error_messages = ParseArguments.validate(options)
 Environment.environment = options[:environment] || "production"
 database = Environment.database_connection
 
-if error_messages.empty?
-  shelterdog = ShelterDog.new(options)
-  shelterdog.save
-  puts "A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
+if command == "add"
+  if error_messages.empty?
+    shelterdog = ShelterDog.new(options)
+    shelterdog.save
+    puts "A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
+  else
+    puts error_messages
+  end
+elsif command == "list"
+  puts "All Shelter Dogs:"
+  puts ShelterDog.all
 else
-  puts error_messages
+  puts "Command not implemented"
 end

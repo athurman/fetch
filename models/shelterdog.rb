@@ -32,6 +32,12 @@ class ShelterDog
     end
   end
 
+  def self.create(attributes = {})
+    shelterdog = ShelterDog.new(attributes)
+    shelterdog.save
+    shelterdog
+  end
+
   def self.search
     puts "Needs to be Implemented"
   end
