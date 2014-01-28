@@ -2,6 +2,7 @@
 
 require_relative 'lib/environment.rb'
 require_relative 'lib/parse_arguments.rb'
+require_relative 'lib/interactions.rb'
 
 command = ARGV[0]
 options = ParseArguments.parse
@@ -24,16 +25,13 @@ elsif command == "list"
   puts ShelterDog.all
 elsif command == "update"
   ShelterDog.search(options[:name])
-  puts "Please select the id of the dog you would like to update."
-  id = $stdin.gets.chomp
+  id = Interaction.ask("Please select the id of the dog you would like to update.")
   shelterdog = ShelterDog.find_by_id(id)
-  puts shelterdog
-  puts "Please select the piece of information you would like to update (age, status, etc.)."
-  selection = $stdin.gets.chomp
-  puts "What would you like to change the dog's #{selection} to?"
-  updated_info = $stdin.gets.chomp
+  Interaction.tell(shelterdog)
+  selection = Interaction.ask("Please select the piece of information you would like to update (age, status, etc.).")
+  updated_info = Interaction.ask("What would you like to change the dog's #{selection} to?")
   shelterdog = shelterdog.update(selection, updated_info, id)
-  puts "Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}"
+  Interaction.tell("Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}")
 else
   puts "Command not implemented"
 end
