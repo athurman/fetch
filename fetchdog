@@ -16,21 +16,25 @@ class FetchDog
   def main
     database = Environment.database_connection
     if options[:command] == "add"
-      error_messages = ParseArguments.validate(options)
-      if error_messages.empty?
-        shelterdog = ShelterDog.new(options)
-        shelterdog.save
-        puts "A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
-      else
-        puts error_messages
-      end
+      add_shelter_dog_to_db()
     elsif options[:command] == "list"
       list_purchases()
     elsif options[:command] == "update"
       searched_dog = ShelterDog.search_by_name(options[:name])
       update_shelter_dog_info_for(searched_dog)
     else
-      puts "Command not implemented"
+      tell("Command not implemented")
+    end
+  end
+
+  def add_shelter_dog_to_db()
+    error_messages = ParseArguments.validate(options)
+    if error_messages.empty?
+      shelterdog = ShelterDog.new(options)
+      shelterdog.save
+      tell("A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}.")
+    else
+      tell(error_messages)
     end
   end
 
