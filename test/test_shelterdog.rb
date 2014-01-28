@@ -45,7 +45,29 @@ class TestShelterDog < FetchTest
     assert_equal dogs_before, dogs_after
   end
 
-  def test_find_returns_nil_if_unfindable
-    assert_nil ShelterDog.find_by_id(12342)
+  def test_delete_method_removes_dog
+    fido = ShelterDog.create(name: "Fido", breed: "Collie",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    spot = ShelterDog.create(name: "Spot", breed: "Cocker Spaniel",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    dogs_before = database.execute("select count(*) from shelterdogs")[0][0]
+    ShelterDog.delete(fido.id)
+    dogs_after = database.execute("select count(*) from shelterdogs")[0][0]
+    assert_equal dogs_before - 1, dogs_after
+  end
+
+  def test_cant_find_dog_after_it_is_deleted
+    fido = ShelterDog.create(name: "Fido", breed: "Collie",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    ShelterDog.delete(fido.id)
+    result = ShelterDog.search_by_name(fido.name)
+    assert_equal "The dog you were searching for is not found", result
+  end
+
+  def test_search_by_id_returns_nil_if_unfindable
+    assert_nil ShelterDog.search_by_id(12342)
   end
 end

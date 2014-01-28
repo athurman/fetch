@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-class TestListingPurchases < FetchTest
+class TestListingShelterDogs < FetchTest
   def test_lists_all_results
     fido = ShelterDog.create(name: "Fido", breed: "Collie",
                              shelter: "Humane Society", age: "young",

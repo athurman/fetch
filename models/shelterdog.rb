@@ -34,8 +34,7 @@ class ShelterDog
     database = Environment.database_connection
     results = database.execute("select shelterdogs.id, shelterdogs.name from shelterdogs where name LIKE '%#{dog_name}%'")
     if results.empty?
-      puts "The dog you were searching for is not found"
-      exit
+      return "The dog you were searching for is not found"
     else
       i = 0
       results.each do
@@ -47,7 +46,7 @@ class ShelterDog
     end
   end
 
-  def self.find_by_id id
+  def self.search_by_id id
     database = Environment.database_connection
     database.results_as_hash = true
     results = database.execute("select * from shelterdogs where id LIKE '#{id}'")[0]
@@ -71,7 +70,12 @@ class ShelterDog
   def update selection, info, id
     database = Environment.database_connection
     database.execute("update shelterdogs set '#{selection}' = '#{info}' where id = #{id}")
-    ShelterDog.find_by_id(id)
+    ShelterDog.search_by_id(id)
+  end
+
+  def self.delete id
+    database = Environment.database_connection
+    database.execute("delete from shelterdogs where shelterdogs.id = #{id}")
   end
 
   protected
