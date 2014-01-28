@@ -30,10 +30,9 @@ class ShelterDog
     end
   end
 
-  def self.search input
+  def self.search_by_name dog_name
     database = Environment.database_connection
-    statement = "select shelterdogs.id, shelterdogs.name from shelterdogs where name LIKE '%#{input}%'"
-    results = database.execute(statement)
+    results = database.execute("select shelterdogs.id, shelterdogs.name from shelterdogs where name LIKE '%#{dog_name}%'")
     if results.empty?
       puts "The dog you were searching for is not found"
       exit

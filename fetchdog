@@ -1,37 +1,54 @@
 #!/usr/bin/env ruby
 
-require_relative 'lib/environment.rb'
-require_relative 'lib/parse_arguments.rb'
-require_relative 'lib/interactions.rb'
+require_relative 'lib/environment'
+require_relative 'lib/parse_arguments'
+require_relative 'lib/interactions'
 
-command = ARGV[0]
-options = ParseArguments.parse
-options[:name] = ARGV[1]
-error_messages = ParseArguments.validate(options)
+class FetchDog
+  include Interactions
+  attr_reader :options
 
-Environment.environment = options[:environment] || "production"
-database = Environment.database_connection
-
-if command == "add"
-  if error_messages.empty?
-    shelterdog = ShelterDog.new(options)
-    shelterdog.save
-    puts "A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
-  else
-    puts error_messages
+  def initialize
+    @options = ParseArguments.parse
+    Environment.environment = @options[:environment] || "production"
   end
-elsif command == "list"
-  puts "All Shelter Dogs:"
-  puts ShelterDog.all
-elsif command == "update"
-  ShelterDog.search(options[:name])
-  id = Interaction.ask("Please select the id of the dog you would like to update.")
-  shelterdog = ShelterDog.find_by_id(id)
-  Interaction.tell(shelterdog)
-  selection = Interaction.ask("Please select the piece of information you would like to update (age, status, etc.).")
-  updated_info = Interaction.ask("What would you like to change the dog's #{selection} to?")
-  shelterdog = shelterdog.update(selection, updated_info, id)
-  Interaction.tell("Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}")
-else
-  puts "Command not implemented"
+
+  def main
+    database = Environment.database_connection
+    if options[:command] == "add"
+      error_messages = ParseArguments.validate(options)
+      if error_messages.empty?
+        shelterdog = ShelterDog.new(options)
+        shelterdog.save
+        puts "A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}."
+      else
+        puts error_messages
+      end
+    elsif options[:command] == "list"
+      list_purchases()
+    elsif options[:command] == "update"
+      searched_dog = ShelterDog.search_by_name(options[:name])
+      update_shelter_dog_info_for(searched_dog)
+    else
+      puts "Command not implemented"
+    end
+  end
+
+  def list_purchases()
+    puts "All Shelter Dogs:"
+    puts ShelterDog.all
+  end
+
+  def update_shelter_dog_info_for searched_dog
+    id = ask("Please select the id of the dog you would like to update.")
+    shelterdog = ShelterDog.find_by_id(id)
+    tell(shelterdog)
+    selection = ask("Please select the piece of information you would like to update (age, status, etc.).")
+    updated_info = ask("What would you like to change the dog's #{selection} to?")
+    shelterdog = shelterdog.update(selection, updated_info, id)
+    tell("Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}")
+  end
 end
+
+fetchdog = FetchDog.new()
+fetchdog.main()

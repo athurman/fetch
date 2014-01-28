@@ -26,6 +26,8 @@ class ParseArguments
         options[:environment] = env
       end
     end.parse!
+    options[:name] = ARGV[1]
+    options[:command] = ARGV[0]
     options
   end
 
