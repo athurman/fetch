@@ -23,5 +23,5 @@ task :test_prepare do
 end
 
 def create_tables(database_connection)
-  database_connection.execute("CREATE TABLE shelterdogs (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), breed varchar(50), shelter varchar(50), age varchar(5), weight varchar(1), status varchar(5))")
+  database_connection.execute("CREATE TABLE shelterdogs (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), breed_id integer, shelter varchar(50), age varchar(5), weight varchar(1), status varchar(5))")
 end

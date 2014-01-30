@@ -2,6 +2,10 @@ require 'minitest/autorun'
 require_relative '../lib/environment'
 
 class FetchTest < MiniTest::Unit::TestCase
+  def setup
+    Environment.environment = "test"
+  end
+
   def database
     Environment.environment = "test"
     Environment.database_connection
