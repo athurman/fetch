@@ -3,7 +3,7 @@ require_relative '../models/role'
 
 class TestRole < FetchTest
   def test_all_method_prints_all_roles
-    actual = Role.all.map{ |category| category.name }
+    actual = Role.all.map{ |role| role.name }
     expected = ["Companion Dog", "Guard Dog", "Herding", "Hunting", "Show Dog"]
     assert_equal expected, actual
   end

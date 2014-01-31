@@ -1,3 +1,5 @@
+require_relative '../lib/environment.rb'
+
 class Group
   attr_accessor :name
   attr_reader :id
