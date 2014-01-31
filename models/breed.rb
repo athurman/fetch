@@ -8,7 +8,11 @@ class Breed
     end
   end
 
-
+  def to_s
+    "#{id}. #{name}:\nSize: #{size}\nLifespan: #{lifespan}\nAverage Weight: #{weight}\n
+    Averge Height: #{height}\nGroup: #{group_id}\nExercise: #{exercise}\nGrooming? #{grooming}\n
+    Family Friendly? #{family_friendly}\nTemperament: #{temperament}"
+  end
 
   def save
     database = Environment.database_connection
@@ -25,12 +29,13 @@ class Breed
   def self.find_by_name breed_name
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("select * from breeds where name like '%#{breed_name}%'")
+    results = database.execute("select * from breeds where name = '#{breed_name}'")
+    database.results_as_hash = false
     if results.empty?
       breed = "Unable to find breed"
     else
       row_hash = results[0]
-      breed = Breed.new(name: row_hash["name"], size: row_hash["breed"], lifespan: row_hash["lifespan"],
+      breed = Breed.new(name: row_hash["name"], size: row_hash["size"], lifespan: row_hash["lifespan"],
                 weight: row_hash["weight"], height: row_hash["height"], group_id: row_hash["group_id"],
                 exercise: row_hash["exercise"], grooming: row_hash["grooming"], family_friendly: row_hash["family_friendly"],
                 role_id: row_hash["role_id"], temperament: row_hash["temperament"])
