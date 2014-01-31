@@ -1,10 +1,10 @@
 require 'httparty'
 require 'json'
-require_relative '../models/shelterdog.rb'
-require_relative '../models/group.rb'
-require_relative '../models/role.rb'
-require_relative '../models/breed.rb'
-require_relative '../lib/environment.rb'
+require_relative './models/shelterdog.rb'
+require_relative './models/group.rb'
+require_relative './models/role.rb'
+require_relative './models/breed.rb'
+require_relative './lib/environment.rb'
 
 environment = Environment.environment = "test"
 
@@ -16,6 +16,7 @@ class JsonParser
     breeds_hash = JSON.parse(breeds)
     breeds_hash["breeds"].each do |breed_obj|
       name = breed_obj["breed_name"].dump
+      puts name
       size = breed_obj["size"]
       lifespan = breed_obj["lifespan"].dump
       weight = breed_obj["weight"].dump
@@ -26,6 +27,11 @@ class JsonParser
       family_friendly = breed_obj["family_friendly"]
       role = Role.find(breed_obj["role"])
       temperament = breed_obj["temperament"].dump
+      name.each_char do |char|
+        if char == "'"
+          name.delete!(char)
+        end
+      end
 
       breed = Breed.create(name: name, size: size, lifespan: lifespan,
                            weight: weight, height: height, group_id: group.id,
