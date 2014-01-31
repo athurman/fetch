@@ -12,7 +12,7 @@ class JsonParser
   BASEURL = 'http://api.petfinder.com/'
 
   def self.parse_breeds
-    breeds = File.read("../breeds.json")
+    breeds = File.read("breeds.json")
     breeds_hash = JSON.parse(breeds)
     breeds_hash["breeds"].each do |breed_obj|
       name = breed_obj["breed_name"].dump
