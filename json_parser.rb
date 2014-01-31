@@ -15,18 +15,18 @@ class JsonParser
     breeds = File.read("breeds.json")
     breeds_hash = JSON.parse(breeds)
     breeds_hash["breeds"].each do |breed_obj|
-      name = breed_obj["breed_name"].dump
+      name = breed_obj["breed_name"]
       puts name
       size = breed_obj["size"]
-      lifespan = breed_obj["lifespan"].dump
-      weight = breed_obj["weight"].dump
-      height = breed_obj["height"].dump
+      lifespan = breed_obj["lifespan"]
+      weight = breed_obj["weight"]
+      height = breed_obj["height"]
       group = Group.find(breed_obj["group"])
       exercise = breed_obj["exercise"]
       grooming = breed_obj["grooming"]
       family_friendly = breed_obj["family_friendly"]
       role = Role.find(breed_obj["role"])
-      temperament = breed_obj["temperament"].dump
+      temperament = breed_obj["temperament"]
       name.each_char do |char|
         if char == "'"
           name.delete!(char)

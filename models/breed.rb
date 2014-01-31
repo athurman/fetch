@@ -8,6 +8,8 @@ class Breed
     end
   end
 
+
+
   def save
     database = Environment.database_connection
     database.execute("insert into breeds(name, size, lifespan, weight, height, group_id, exercise, grooming, family_friendly, role_id, temperament) values('#{name}', '#{size}', '#{lifespan}', '#{weight}', '#{height}', '#{group_id}', '#{exercise}', '#{grooming}', '#{family_friendly}', '#{role_id}', '#{temperament}')")
@@ -23,7 +25,7 @@ class Breed
   def self.find_by_name breed_name
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("select * from breeds where name = '#{breed_name}'")
+    results = database.execute("select * from breeds where name like '%#{breed_name}%'")
     if results.empty?
       breed = "Unable to find breed"
     else
