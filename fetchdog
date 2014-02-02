@@ -3,6 +3,7 @@
 require_relative 'lib/environment'
 require_relative 'lib/parse_arguments'
 require_relative 'lib/interactions'
+require_relative 'models/role'
 
 class FetchDog
   include Interactions
@@ -15,7 +16,19 @@ class FetchDog
 
   def main
     database = Environment.database_connection
-    if options[:command] == "add"
+    if options[:command].nil?
+      query = "Please select the number of the role you would like for your dog to be.\n"
+      roles = Role.all
+      roles.each_with_index do |role, i|
+        query << "#{i+1}. #{role.name}\n"
+      end
+      role_number = ask(query)
+      if role_number.empty?
+        "Please try again, not a valid input."
+      else
+        chosen_role = roles[role_number.to_i - 1]
+      end
+    elsif options[:command] == "add"
       add_shelter_dog_to_db()
     elsif options[:command] == "list"
       list_purchases()

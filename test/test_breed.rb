@@ -19,4 +19,10 @@ class TestBreed < FetchTest
     Family Friendly? yes\nTemperament: The Akita is a bold, independent and stubborn breed."
     assert_equal expected, akita.to_s
   end
+
+  def test_search_breeds_by_role
+    breeds = Breed.find_by_role(2)
+    expected = ["Airedale Terrier", "American Bulldog", "American Staffordshire Terrier", "Anatolian Shepherd", "Belgian Shepherd Malinois", "Blue Lacy", "Bullmastiff", "Cane Corso Mastiff"]
+    assert_equal expected, breeds.map{ |breed| breed.name}
+  end
 end

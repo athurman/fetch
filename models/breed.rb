@@ -44,6 +44,28 @@ class Breed
     breed
   end
 
+  def self.find_by_role id
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("SELECT breeds.name FROM breeds where breeds.role_id = #{id}")
+    database.results_as_hash = false
+    breeds = []
+    unless results.empty?
+      row_hash = results
+      i = 0
+      results.each do |breed|
+        breed = Breed.new(name: row_hash[i]["name"], size: row_hash[i]["size"], lifespan: row_hash[i]["lifespan"],
+                  weight: row_hash[i]["weight"], height: row_hash[i]["height"], group_id: row_hash[i]["group_id"],
+                  exercise: row_hash[i]["exercise"], grooming: row_hash[i]["grooming"], family_friendly: row_hash[i]["family_friendly"],
+                  role_id: row_hash[i]["role_id"], temperament: row_hash[i]["temperament"])
+        breed.send("id=", row_hash[i]["id"])
+        breeds << breed
+        i = i +1
+      end
+    end
+    breeds
+  end
+
   protected
 
   def id=(id)
