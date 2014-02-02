@@ -47,7 +47,7 @@ class Breed
   def self.find_by_role id
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("SELECT breeds.name FROM breeds where breeds.role_id = #{id}")
+    results = database.execute("SELECT * FROM breeds where breeds.role_id = #{id}")
     database.results_as_hash = false
     breeds = []
     unless results.empty?
@@ -64,6 +64,22 @@ class Breed
       end
     end
     breeds
+  end
+
+  def self.return_exercise id
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("select distinct exercise from breeds where role_id = #{id}")
+    database.results_as_hash = false
+    row_hash = results
+    exercises = []
+    i = 0
+    results.each do
+      exercise = row_hash[i]["exercise"]
+      exercises << exercise
+      i = i +1
+    end
+    exercises
   end
 
   protected

@@ -25,4 +25,10 @@ class TestBreed < FetchTest
     expected = ["Airedale Terrier", "American Bulldog", "American Staffordshire Terrier", "Anatolian Shepherd", "Belgian Shepherd Malinois", "Blue Lacy", "Bullmastiff", "Cane Corso Mastiff"]
     assert_equal expected, breeds.map{ |breed| breed.name}
   end
+
+  def test_find_breeds_and_return_exercise
+    role_id = 2
+    exercises = Breed.return_exercise(role_id)
+    assert_equal ["Daily", "Moderate"], exercises
+  end
 end
