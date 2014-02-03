@@ -25,6 +25,14 @@ class Shelter
     shelter
   end
 
+  def self.calculate_popular_breed id
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("Select shelterdogs.breed, Count(*) From shelterdogs Where shelterdogs.shelter = '#{id}' GROUP BY shelterdogs.breed ORDER BY COUNT(*) DESC")
+    database.results_as_hash = false
+    results[0]["breed"]
+  end
+
   def self.find_by_location zip_code
     database = Environment.database_connection
     database.results_as_hash = true

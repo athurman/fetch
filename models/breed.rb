@@ -40,7 +40,7 @@ class Breed
 
   def save
     database = Environment.database_connection
-    database.execute("insert into breeds(name, size, lifespan, weight, height, group_id, exercise, grooming, family_friendly, role_id, temperament) values('#{name}', '#{size}', '#{lifespan}', '#{weight}', '#{height}', '#{group_id}', '#{exercise}', '#{grooming}', '#{family_friendly}', '#{role_id}', '#{temperament}')")
+    database.execute("insert into breeds(name, size, lifespan, weight, height, group_id, exercise, grooming, family_friendly, role_id, temperament) values('#{name}', '#{size}', '#{lifespan}', '#{weight}', '#{height}', '#{group.id}', '#{exercise}', '#{grooming}', '#{family_friendly}', '#{role_id}', '#{temperament}')")
     @id = database.last_insert_row_id
   end
 
