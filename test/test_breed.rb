@@ -14,9 +14,7 @@ class TestBreed < FetchTest
 
   def test_to_s_prints_breed_details
     akita = Breed.find_by_name("Akita")
-    expected = "#{akita.id}. Akita:\nSize: L\nLifespan: 10 to 12 years\nAverage Weight: 75 to 110 lbs.\n
-    Averge Height: 24 to 28 inches\nGroup: 6\nExercise: Moderate\nGrooming? yes\n
-    Family Friendly? yes\nTemperament: The Akita is a bold, independent and stubborn breed."
+    expected = "#{akita.id}. Akita:\nSize: L\nLifespan: 10 to 12 years\nAverage Weight: 75 to 110 lbs.\nAverge Height: 24 to 28 inches\nGroup: 6\nExercise: Moderate\nGrooming? yes\nFamily Friendly? yes\nTemperament: The Akita is a bold, independent and stubborn breed."
     assert_equal expected, akita.to_s
   end
 

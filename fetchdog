@@ -20,24 +20,28 @@ class FetchDog
     if options[:command].nil?
 
       roles = Role.all
+      check_results(roles)
       role = give_options("Please select the number of the role you would like for your dog to be.", roles)
-
+      check_results(roles)
       exercises = Breed.return_exercise(role.id)
+      check_results(exercises)
       exercises.delete_at(3) if exercises.length == 4
       exercise = give_options("How often do you exercise?", exercises)
-
       grooming = give_options("Are you willing to groom your dog frequently (at least once a week)?", ["yes", "no"])
-      # must write a query for breeds that asks for role, exercise, grooming, and family_friendly altogether.
       family_friendly = give_options("Does your dog have to be good around children?", ["yes", "no"])
       breeds = Breed.find_top_five(role.id, exercise, grooming, family_friendly)
-      print_top_five(breeds)
+      check_results(breeds)
+      print_dogs(breeds)
       search = give_options("Would you like to search for one of these breeds in local shelters?", ["yes", "no"])
       if search == "yes"
-        ask()
+        shelter_breed = give_options("Please type in the number of the breed you would like to search:", breeds)
       else
         tell("Thanks!")
         exit
       end
+      shelterdogs = ShelterDog.find_by_breedname(shelter_breed.name)
+      check_results(shelterdogs)
+      print_dogs(shelterdogs, shelter_breed.name)
     elsif options[:command] == "add"
       add_shelter_dog_to_db()
     elsif options[:command] == "list"
@@ -70,10 +74,21 @@ class FetchDog
     puts ShelterDog.all
   end
 
-  def print_top_five breeds
-    puts "Here are the top 5 dog breeds that fit your lifestyle:"
-    breeds.each do |breed|
-      puts breed
+  def check_results results
+    if results == [] || results == "No results found"
+      puts "Sorry, we were unable to fulfill your request.  Please try again"
+      exit
+    end
+  end
+
+  def print_dogs(dog_array, breed_name= "dog")
+    if dog_array[0].is_a?(Breed)
+      puts "Here are the top 5 dog breeds that fit your lifestyle:"
+    elsif dog_array[0].is_a?(ShelterDog)
+      puts "Here are #{breed_name}s in the surrounding area:"
+    end
+    dog_array.each do |dog|
+      puts dog
       puts
     end
   end

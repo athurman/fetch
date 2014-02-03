@@ -10,10 +10,14 @@ class Role
     database = Environment.database_connection
     database.results_as_hash = true
     results = database.execute("select * from roles order by name ASC")
-    results.map do |row_hash|
-      role = Role.new(row_hash["name"])
-      role.send("id=", row_hash["id"])
-      role
+    if results.empty?
+      "No results found"
+    else
+      results.map do |row_hash|
+        role = Role.new(row_hash["name"])
+        role.send("id=", row_hash["id"])
+        role
+      end
     end
   end
 

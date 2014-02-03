@@ -70,4 +70,32 @@ class TestShelterDog < FetchTest
   def test_search_by_id_returns_nil_if_unfindable
     assert_nil ShelterDog.search_by_id(12342)
   end
+
+  def test_search_shelterdogs_by_breed_name
+    spot = ShelterDog.create(name: "Spot", breed: "Australian Terrier",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    fido = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    ruby = ShelterDog.create(name: "Ruby", breed: "German Shepherd",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    shelterdogs = ShelterDog.find_by_breedname("Australian Terrier")
+    assert_equal ["Fido", "Spot"], shelterdogs.map{ |dog| dog.name}
+  end
+
+  def test_search_shelterdogs_by_breed_name_returns_empty_array
+    spot = ShelterDog.create(name: "Spot", breed: "Australian Terrier",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    fido = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    ruby = ShelterDog.create(name: "Ruby", breed: "German Shepherd",
+                             shelter: "Humane Society", age: "young",
+                             weight: "M", status: "A")
+    shelterdogs = ShelterDog.find_by_breedname("Labrador Retriever")
+    assert_equal [], shelterdogs
+  end
 end

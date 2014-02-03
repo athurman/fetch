@@ -61,6 +61,26 @@ class ShelterDog
     end
   end
 
+  def self.find_by_breedname breed_name
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("select * from shelterdogs where breed = '#{breed_name}' order by name ASC")
+    shelterdogs = []
+    unless results.empty?
+      row_hash = results
+      i = 0
+      results.each do |breed|
+        shelterdog = ShelterDog.new(name: results[i]["name"], breed: results[i]["breed"],
+                                  shelter: results[i]["shelter"], age: results[i]["age"],
+                                  weight: results[i]["weight"], status: results[i]["status"])
+        shelterdog.send("id=", results[i]["id"])
+        shelterdogs << shelterdog
+        i = i +1
+      end
+    end
+    shelterdogs
+  end
+
   def self.create(attributes = {})
     shelterdog = ShelterDog.new(attributes)
     shelterdog.save

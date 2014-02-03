@@ -11,7 +11,7 @@ module Interactions
   def give_options(question, choice_array)
     question = question + "\n"
     choice_array.each_with_index do |choice, i|
-      if choice.is_a?(Role)
+      if choice.is_a?(Role) || choice.is_a?(Breed)
         question << "#{i+1}. #{choice.name}\n"
       else
         question << "#{i+1}. #{choice}\n"
