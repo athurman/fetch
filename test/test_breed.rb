@@ -14,7 +14,7 @@ class TestBreed < FetchTest
 
   def test_to_s_prints_breed_details
     akita = Breed.find_by_name("Akita")
-    expected = "#{akita.id}. Akita:\nSize: L\nLifespan: 10 to 12 years\nAverage Weight: 75 to 110 lbs.\nAverge Height: 24 to 28 inches\nGroup: 6\nExercise: Moderate\nGrooming? yes\nFamily Friendly? yes\nTemperament: The Akita is a bold, independent and stubborn breed."
+    expected = "#{akita.id}. Akita:\nSize: L\nLifespan: 10 to 12 years\nAverage Weight: 75 to 110 lbs.\nAverge Height: 24 to 28 inches\nGroup: Working\nExercise: Moderate\nGrooming? yes\nFamily Friendly? yes\nTemperament: The Akita is a bold, independent and stubborn breed."
     assert_equal expected, akita.to_s
   end
 
@@ -30,23 +30,23 @@ class TestBreed < FetchTest
     assert_equal ["Daily", "Moderate"], exercises
   end
 
-  def test_return_top_five_breeds
+  def test_return_top_ten_breeds
     role_id = 1
     exercise = "Moderate"
     grooming = "yes"
     family_friendly = "yes"
     breeds = Breed.find_top_five(role_id, exercise, grooming, family_friendly)
-    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound"]
+    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound", "Beagle", "Bearded Collie", "Bedlington Terrier", "Belgian Shepherd Dog Sheepdog", "Belgian Shepherd Tervuren"]
     assert_equal expected, breeds.map{ |breed| breed.name}
   end
 
-  def test_return_top_five_breeds_if_family_friendly_no
+  def test_return_top_ten_breeds_if_family_friendly_no
     role_id = 1
     exercise = "Moderate"
     grooming = "yes"
     family_friendly = "no"
     breeds = Breed.find_top_five(role_id, exercise, grooming, family_friendly)
-    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound"]
+    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound", "Beagle", "Bearded Collie", "Bedlington Terrier", "Belgian Shepherd Dog Sheepdog", "Belgian Shepherd Tervuren"]
     assert_equal expected, breeds.map{ |breed| breed.name}
   end
 

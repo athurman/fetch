@@ -1,10 +1,12 @@
+require_relative 'group'
+
 class Breed
   attr_accessor :name,
                 :size,
                 :lifespan,
                 :weight,
                 :height,
-                :group_id,
+                :group,
                 :exercise,
                 :grooming,
                 :family_friendly,
@@ -13,16 +15,27 @@ class Breed
   attr_reader :id
 
   def initialize attributes = {}
-    [:name, :size, :lifespan, :weight,
-     :height, :group_id, :exercise,
-     :grooming, :family_friendly, :role_id,
-     :temperament].each do |attr|
-      self.send("#{attr}=", attributes[attr])
-    end
+    @name = attributes[:name]
+    @size = attributes[:size]
+    @lifespan = attributes[:lifespan]
+    @weight = attributes[:weight]
+    @height = attributes[:height]
+    @group = Group.find_by_id(attributes[:group_id])
+    @exercise = attributes[:exercise]
+    @grooming = attributes[:grooming]
+    @family_friendly = attributes[:family_friendly]
+    @role = attributes[:role]
+    @temperament = attributes[:temperament]
+    # [:name, :size, :lifespan, :weight,
+    #  :height, :exercise,
+    #  :grooming, :family_friendly, :role_id,
+    #  :temperament].each do |attr|
+    #   self.send("#{attr}=", attributes[attr])
+    # end
   end
 
   def to_s
-    "#{id}. #{name}:\nSize: #{size}\nLifespan: #{lifespan}\nAverage Weight: #{weight}\nAverge Height: #{height}\nGroup: #{group_id}\nExercise: #{exercise}\nGrooming? #{grooming}\nFamily Friendly? #{family_friendly}\nTemperament: #{temperament}"
+    "#{id}. #{name}:\nSize: #{size}\nLifespan: #{lifespan}\nAverage Weight: #{weight}\nAverge Height: #{height}\nGroup: #{group.name}\nExercise: #{exercise}\nGrooming? #{grooming}\nFamily Friendly? #{family_friendly}\nTemperament: #{temperament}"
   end
 
   def save
@@ -46,6 +59,7 @@ class Breed
       breed = "Unable to find breed"
     else
       row_hash = results[0]
+      # group = Group.find_by_id(row_hash["group_id"])
       breed = Breed.new(name: row_hash["name"], size: row_hash["size"], lifespan: row_hash["lifespan"],
                 weight: row_hash["weight"], height: row_hash["height"], group_id: row_hash["group_id"],
                 exercise: row_hash["exercise"], grooming: row_hash["grooming"], family_friendly: row_hash["family_friendly"],
@@ -65,6 +79,7 @@ class Breed
       row_hash = results
       i = 0
       results.each do |breed|
+        # group = Group.find_by_id(row_hash[i]["group_id"])
         breed = Breed.new(name: row_hash[i]["name"], size: row_hash[i]["size"], lifespan: row_hash[i]["lifespan"],
                   weight: row_hash[i]["weight"], height: row_hash[i]["height"], group_id: row_hash[i]["group_id"],
                   exercise: row_hash[i]["exercise"], grooming: row_hash[i]["grooming"], family_friendly: row_hash[i]["family_friendly"],
@@ -101,13 +116,13 @@ class Breed
     database = Environment.database_connection
     database.results_as_hash = true
     if family_friendly == "no" && grooming == "yes"
-      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' limit 5")
+      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' limit 10")
     elsif family_friendly == "no"
-      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and grooming = '#{grooming}' limit 5")
+      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and grooming = '#{grooming}' limit 10")
     elsif grooming == "yes"
-      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and family_friendly = '#{family_friendly}' limit 5")
+      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and family_friendly = '#{family_friendly}' limit 10")
     else
-      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and grooming = '#{grooming}' and family_friendly = '#{family_friendly}' limit 5")
+      results = database.execute("select * from breeds where role_id = #{role_id} and exercise = '#{exercise}' and grooming = '#{grooming}' and family_friendly = '#{family_friendly}' limit 10")
     end
     database.results_as_hash = false
     row_hash = results
@@ -117,6 +132,7 @@ class Breed
       puts "No results found"
     else
       results.each do
+        # group = Group.find_by_id(row_hash[i]["group_id"])
         breed = Breed.new(name: row_hash[i]["name"], size: row_hash[i]["size"], lifespan: row_hash[i]["lifespan"],
                   weight: row_hash[i]["weight"], height: row_hash[i]["height"], group_id: row_hash[i]["group_id"],
                   exercise: row_hash[i]["exercise"], grooming: row_hash[i]["grooming"], family_friendly: row_hash[i]["family_friendly"],

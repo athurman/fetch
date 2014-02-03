@@ -18,4 +18,10 @@ class TestGroup < FetchTest
     group = Group.find("Herding")
     assert_equal 4, group.id
   end
+
+  def test_find_by_id_from_table
+    group = Group.find_by_id(4)
+    assert_equal "Herding", group.name
+    assert_equal 4, group.id
+  end
 end
