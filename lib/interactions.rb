@@ -7,4 +7,17 @@ module Interactions
   def tell statement
     puts statement
   end
+
+  def give_options(question, choice_array)
+    question = question + "\n"
+    choice_array.each_with_index do |choice, i|
+      if choice.is_a?(Role)
+        question << "#{i+1}. #{choice.name}\n"
+      else
+        question << "#{i+1}. #{choice}\n"
+      end
+    end
+    answer = ask(question)
+    chosen_option = choice_array[answer.to_i - 1]
+  end
 end
