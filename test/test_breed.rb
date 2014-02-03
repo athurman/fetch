@@ -31,4 +31,34 @@ class TestBreed < FetchTest
     exercises = Breed.return_exercise(role_id)
     assert_equal ["Daily", "Moderate"], exercises
   end
+
+  def test_return_top_five_breeds
+    role_id = 1
+    exercise = "Moderate"
+    grooming = "yes"
+    family_friendly = "yes"
+    breeds = Breed.find_top_five(role_id, exercise, grooming, family_friendly)
+    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound"]
+    assert_equal expected, breeds.map{ |breed| breed.name}
+  end
+
+  def test_return_top_five_breeds_if_family_friendly_no
+    role_id = 1
+    exercise = "Moderate"
+    grooming = "yes"
+    family_friendly = "no"
+    breeds = Breed.find_top_five(role_id, exercise, grooming, family_friendly)
+    expected = ["Akita", "American Eskimo Dog", "Appenzell Mountain Dog", "Australian Terrier", "Basset Hound"]
+    assert_equal expected, breeds.map{ |breed| breed.name}
+  end
+
+  def test_return_top_five_breeds_if_grooming_yes
+    role_id = 2
+    exercise = "Moderate"
+    grooming = "yes"
+    family_friendly = "yes"
+    breeds = Breed.find_top_five(role_id, exercise, grooming, family_friendly)
+    expected = ["American Bulldog", "Anatolian Shepherd", "Belgian Shepherd Malinois"]
+    assert_equal expected, breeds.map{ |breed| breed.name}
+  end
 end

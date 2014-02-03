@@ -4,6 +4,7 @@ require_relative 'lib/environment'
 require_relative 'lib/parse_arguments'
 require_relative 'lib/interactions'
 require_relative 'models/role'
+require_relative 'models/breed'
 
 class FetchDog
   include Interactions
@@ -17,21 +18,30 @@ class FetchDog
   def main
     database = Environment.database_connection
     if options[:command].nil?
-      query = "Please select the number of the role you would like for your dog to be.\n"
+
       roles = Role.all
-      roles.each_with_index do |role, i|
-        query << "#{i+1}. #{role.name}\n"
-      end
-      role_number = ask(query)
-      if role_number.empty?
-        "Please try again, not a valid input."
+      role = give_options("Please select the number of the role you would like for your dog to be.", roles)
+
+      exercises = Breed.return_exercise(role.id)
+      exercises.delete_at(3) if exercises.length == 4
+      exercise = give_options("How often do you exercise?", exercises)
+
+      grooming = give_options("Are you willing to groom your dog frequently (at least once a week)?", ["yes", "no"])
+      # must write a query for breeds that asks for role, exercise, grooming, and family_friendly altogether.
+      family_friendly = give_options("Does your dog have to be good around children?", ["yes", "no"])
+      breeds = Breed.find_top_five(role.id, exercise, grooming, family_friendly)
+      print_top_five(breeds)
+      search = give_options("Would you like to search for one of these breeds in local shelters?", ["yes", "no"])
+      if search == "yes"
+        ask()
       else
-        chosen_role = roles[role_number.to_i - 1]
+        tell("Thanks!")
+        exit
       end
     elsif options[:command] == "add"
       add_shelter_dog_to_db()
     elsif options[:command] == "list"
-      list_purchases()
+      list_shelterdogs()
     elsif options[:command] == "update"
       searched_dog = ShelterDog.search_by_name(options[:name])
       update_shelter_dog_info_for(searched_dog)
@@ -55,9 +65,17 @@ class FetchDog
     end
   end
 
-  def list_purchases()
+  def list_shelterdogs()
     puts "All Shelter Dogs:"
     puts ShelterDog.all
+  end
+
+  def print_top_five breeds
+    puts "Here are the top 5 dog breeds that fit your lifestyle:"
+    breeds.each do |breed|
+      puts breed
+      puts
+    end
   end
 
   def update_shelter_dog_info_for searched_dog
