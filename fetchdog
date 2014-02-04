@@ -59,7 +59,7 @@ class FetchDog
 
   def print_dogs(dog_array, breed_name= "dog")
     if dog_array[0].is_a?(Breed)
-      puts "Here are the top 5 dog breeds that fit your lifestyle:"
+      puts "Here are the top 10 dog breeds that fit your lifestyle:"
     elsif dog_array[0].is_a?(ShelterDog)
       puts "Here are #{breed_name}s in the surrounding area:"
     end
