@@ -62,6 +62,18 @@ class Shelter
     shelters
   end
 
+  def self.calculate_rate(id, status)
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("select Count(*) from shelterdogs Where shelterdogs.shelter = '#{id}' and shelterdogs.status = '#{status}'")
+    database.results_as_hash = false
+    status_total = results[0][0]
+    total_amt_of_dogs = Shelter.calculate_total_dogs(id)
+    total_amt_of_dogs = total_amt_of_dogs["Count(*)"]
+    rate = status_total.to_f / total_amt_of_dogs.to_f
+    rate = (rate * 100).round.to_s + '%'
+  end
+
   protected
 
   def id=(id)

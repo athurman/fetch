@@ -54,4 +54,32 @@ class TestShelter < FetchTest
     total_dogs = Shelter.calculate_total_dogs("TN546")
     assert_equal = 3, total_dogs
   end
+
+  def test_calculate_rates
+    spot = ShelterDog.create(name: "Spot", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    fido = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    ruby = ShelterDog.create(name: "Ruby", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "X")
+    adoption_rate = Shelter.calculate_rate("TN546", "A")
+    assert_equal "67%", adoption_rate
+  end
+
+  def test_calculate_rates
+    spot = ShelterDog.create(name: "Spot", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    fido = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    ruby = ShelterDog.create(name: "Ruby", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "X")
+    adoption_rate = Shelter.calculate_rate("TN546", "X")
+    assert_equal "33%", adoption_rate
+  end
 end
