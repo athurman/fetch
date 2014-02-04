@@ -16,7 +16,6 @@ class FetchDog
   end
 
   def main
-    database = Environment.database_connection
     if options[:command].nil?
       roles = Role.all
       check_results(roles)

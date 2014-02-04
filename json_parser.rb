@@ -6,7 +6,7 @@ require_relative './models/role.rb'
 require_relative './models/breed.rb'
 require_relative './lib/environment.rb'
 
-environment = Environment.environment = "test"
+environment = Environment.environment = "production"
 
 class JsonParser
   BASEURL = 'http://api.petfinder.com/'
