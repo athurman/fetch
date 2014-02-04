@@ -30,7 +30,15 @@ class Shelter
     database.results_as_hash = true
     results = database.execute("Select shelterdogs.breed, Count(*) From shelterdogs Where shelterdogs.shelter = '#{id}' GROUP BY shelterdogs.breed ORDER BY COUNT(*) DESC")
     database.results_as_hash = false
-    results[0]["breed"]
+    results[0]
+  end
+
+  def self.calculate_total_dogs id
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("Select Count(*) From shelterdogs Where shelterdogs.shelter = '#{id}'")
+    database.results_as_hash = false
+    results[0]
   end
 
   def self.find_by_location zip_code

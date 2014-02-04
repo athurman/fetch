@@ -24,7 +24,7 @@ class TestShelter < FetchTest
                              shelter: "TN546", age: "young",
                              weight: "M", status: "A")
     popular_breed = Shelter.calculate_popular_breed("TN546")
-    assert_equal "Australian Terrier", popular_breed
+    assert_equal 2, popular_breed["Count(*)"]
   end
 
   def test_calculate_most_popular_breed_boxer
@@ -38,6 +38,20 @@ class TestShelter < FetchTest
                              shelter: "TN546", age: "young",
                              weight: "M", status: "A")
     popular_breed = Shelter.calculate_popular_breed("TN546")
-    assert_equal "Boxer", popular_breed
+    assert_equal "Boxer", popular_breed["breed"]
+  end
+
+  def test_calculate_total_dogs_in_shelter
+    spot = ShelterDog.create(name: "Spot", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    fido = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    ruby = ShelterDog.create(name: "Ruby", breed: "Boxer",
+                             shelter: "TN546", age: "young",
+                             weight: "M", status: "A")
+    total_dogs = Shelter.calculate_total_dogs("TN546")
+    assert_equal = 3, total_dogs
   end
 end
