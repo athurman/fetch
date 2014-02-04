@@ -18,6 +18,7 @@ module Interactions
       end
     end
     answer = ask(question)
+    raise ArgumentError, "Please choose a valid option from list." if answer.to_i > choice_array.length
     chosen_option = choice_array[answer.to_i - 1]
   end
 end
