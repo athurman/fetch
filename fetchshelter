@@ -9,13 +9,15 @@ require_relative 'models/role'
 
 class FetchShelter
   include Interactions
+  attr_reader :options
 
   def initialize
-    Environment.environment = "production"
+    @options = ParseArguments.parse
+    Environment.environment = @options[:environment] || "production"
   end
 
   def main
-    zipcode = ARGV[0]
+    zipcode = options[:command]
     if zipcode.nil?
       tell("You must enter a zipcode to search shelters")
       exit
