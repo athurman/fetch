@@ -24,14 +24,8 @@ class Breed
     @exercise = attributes[:exercise]
     @grooming = attributes[:grooming]
     @family_friendly = attributes[:family_friendly]
-    @role = attributes[:role]
+    @role_id = attributes[:role_id]
     @temperament = attributes[:temperament]
-    # [:name, :size, :lifespan, :weight,
-    #  :height, :exercise,
-    #  :grooming, :family_friendly, :role_id,
-    #  :temperament].each do |attr|
-    #   self.send("#{attr}=", attributes[attr])
-    # end
   end
 
   def to_s

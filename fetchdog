@@ -18,7 +18,6 @@ class FetchDog
   def main
     database = Environment.database_connection
     if options[:command].nil?
-
       roles = Role.all
       check_results(roles)
       role = give_options("Please select the number of the role you would like for your dog to be.", roles)
