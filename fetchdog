@@ -17,10 +17,12 @@ class FetchDog
 
   def main
     if options[:command].nil?
+      print_logo()
       find_dog_breeds_and_return_shelter_dogs()
     elsif options[:command] == "add"
       add_shelter_dog_to_db()
     elsif options[:command] == "list"
+      print_logo()
       list_shelterdogs()
     elsif options[:command] == "update"
       searched_dog = ShelterDog.search_by_name(options[:name])
@@ -61,6 +63,7 @@ class FetchDog
     if dog_array[0].is_a?(Breed)
       puts "Here are the top 10 dog breeds that fit your lifestyle:"
     elsif dog_array[0].is_a?(ShelterDog)
+      puts
       puts "Here are #{breed_name}s in the surrounding area:"
     end
     dog_array.each do |dog|
@@ -111,6 +114,26 @@ class FetchDog
     else
       tell(searched_dog)
     end
+  end
+
+  def print_logo
+    title = <<EOS
+
+
+       ad88                                 88
+      d8"                 ,d                88
+      88                  88                88
+    MM88MMM  ,adPPYba,  MM88MMM  ,adPPYba,  88,dPPYba,
+      88    a8P_____88    88    a8"     ""  88P'    "8a
+      88    8PP"""""""    88    8b          88       88
+      88    "8b,   ,aa    88,   "8a,   ,aa  88       88
+      88     `"Ybbd8"'    "Y888  `"Ybbd8"'  88       88
+
+                    -- GO FOR IT --
+
+EOS
+  puts 'clear'
+  puts title
   end
 end
 
