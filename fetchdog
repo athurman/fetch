@@ -3,8 +3,6 @@
 require_relative 'lib/environment'
 require_relative 'lib/parse_arguments'
 require_relative 'lib/interactions'
-require_relative 'models/role'
-require_relative 'models/breed'
 
 class FetchDog
   include Interactions
