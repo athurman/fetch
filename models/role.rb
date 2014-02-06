@@ -6,6 +6,12 @@ class Role
     self.name = name
   end
 
+  def save
+    database = Environment.database_connection
+    database.execute("insert into roles(name) values('#{name}')")
+    @id = database.last_insert_row_id
+  end
+
   def self.all
     database = Environment.database_connection
     database.results_as_hash = true
@@ -32,6 +38,12 @@ class Role
       row_hash = results[0]
       role.send("id=", row_hash["id"])
     end
+    role
+  end
+
+  def self.create(name)
+    role = Role.new(name)
+    role.save
     role
   end
 

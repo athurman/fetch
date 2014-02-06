@@ -1,12 +1,10 @@
 require 'httparty'
 require 'json'
-require_relative './models/shelterdog.rb'
-require_relative './models/group.rb'
-require_relative './models/role.rb'
-require_relative './models/breed.rb'
 require_relative './lib/environment.rb'
 
-environment = Environment.environment = "production"
+environment = Environment.environment = "test"
+
+puts environment
 
 class JsonParser
   BASEURL = 'http://api.petfinder.com/'
@@ -45,6 +43,20 @@ class JsonParser
       shelterdog = ShelterDog.create(name: dog_hash["name"]["$t"], breed_id: shelterdog_breed.id,
                                      shelter: shelter, age: dog_hash["age"]["$t"],
                                      weight: dog_hash["size"]["$t"], status: dog_hash["status"]["$t"])
+    end
+  end
+
+  def self.parse_roles
+    roles = ["Companion Dog", "Guard Dog", "Show Dog", "Hunting", "Herding"]
+    roles.each do |role|
+      Role.create(role)
+    end
+  end
+
+  def self.parse_groups
+    groups = ["Herding", "Hound", "Non-Sporting", "Sporting", "Terrier", "Toy", "Working"]
+    groups.each do |group|
+      Group.create(group)
     end
   end
 end
