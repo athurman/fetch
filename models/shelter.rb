@@ -1,24 +1,26 @@
-class Shelter
-  attr_accessor :name, :location, :petfinder_id
-  attr_reader :id
+class Shelter < ActiveRecord::Base
+  default_scope { order("name ASC") }
+  belongs_to :breed
+  # attr_accessor :name, :location, :petfinder_id
+  # attr_reader :id
 
-  def initialize attributes = {}
-    [:name, :location, :petfinder_id].each do |attr|
-      self.send("#{attr}=", attributes[attr])
-    end
-  end
+  # def initialize attributes = {}
+  #   [:name, :location, :petfinder_id].each do |attr|
+  #     self.send("#{attr}=", attributes[attr])
+  #   end
+  # end
 
-  def save
-    database = Environment.database_connection
-    database.execute("insert into shelters(name, location, petfinder_id) values('#{name}', #{location}, '#{petfinder_id}')")
-    @id = database.last_insert_row_id
-  end
+  # def save
+  #   database = Environment.database_connection
+  #   database.execute("insert into shelters(name, location, petfinder_id) values('#{name}', #{location}, '#{petfinder_id}')")
+  #   @id = database.last_insert_row_id
+  # end
 
-  def self.create(attributes = {})
-    shelter = Shelter.new(attributes)
-    shelter.save
-    shelter
-  end
+  # def self.create(attributes = {})
+  #   shelter = Shelter.new(attributes)
+  #   shelter.save
+  #   shelter
+  # end
 
   def self.find_by_petfinder_id petfinder_id
     database = Environment.database_connection

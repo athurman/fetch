@@ -14,8 +14,8 @@ class JsonParser
     breeds_hash = JSON.parse(breeds)
     breeds_hash["breeds"].each do |breed_obj|
       name = breed_obj["breed_name"]
-      group = Group.find(breed_obj["group"])
-      role = Role.find(breed_obj["role"])
+      group = Group.find_by(name: breed_obj["group"])
+      role = Role.find_by(name: breed_obj["role"])
       name.each_char do |char|
         if char == "'"
           name.delete!(char)
@@ -40,7 +40,7 @@ class JsonParser
         breed = dog_hash["breeds"]["breed"]["$t"]
       end
       shelterdog_breed = Breed.find_by_name(breed)
-      shelterdog = ShelterDog.create(name: dog_hash["name"]["$t"], breed_id: shelterdog_breed.id,
+      shelterdog = ShelterDog.create(name: dog_hash["name"]["$t"], breed_id: shelterdog_breed.name,
                                      shelter: shelter, age: dog_hash["age"]["$t"],
                                      weight: dog_hash["size"]["$t"], status: dog_hash["status"]["$t"])
     end
@@ -49,14 +49,14 @@ class JsonParser
   def self.parse_roles
     roles = ["Companion Dog", "Guard Dog", "Show Dog", "Hunting", "Herding"]
     roles.each do |role|
-      Role.create(role)
+      Role.create(name: role)
     end
   end
 
   def self.parse_groups
     groups = ["Herding", "Hound", "Non-Sporting", "Sporting", "Terrier", "Toy", "Working"]
     groups.each do |group|
-      Group.create(group)
+      Group.create(name: group)
     end
   end
 

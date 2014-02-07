@@ -1,48 +1,48 @@
-require_relative 'group'
+class Breed < ActiveRecord::Base
+  # attr_accessor :name,
+  #               :size,
+  #               :lifespan,
+  #               :weight,
+  #               :height,
+  #               :group,
+  #               :exercise,
+  #               :grooming,
+  #               :family_friendly,
+  #               :role_id,
+  #               :temperament
+  # attr_reader :id
+  belongs_to :role
+  belongs_to :group
 
-class Breed
-  attr_accessor :name,
-                :size,
-                :lifespan,
-                :weight,
-                :height,
-                :group,
-                :exercise,
-                :grooming,
-                :family_friendly,
-                :role_id,
-                :temperament
-  attr_reader :id
-
-  def initialize attributes = {}
-    @name = attributes[:name]
-    @size = attributes[:size]
-    @lifespan = attributes[:lifespan]
-    @weight = attributes[:weight]
-    @height = attributes[:height]
-    @group = Group.find_by_id(attributes[:group_id])
-    @exercise = attributes[:exercise]
-    @grooming = attributes[:grooming]
-    @family_friendly = attributes[:family_friendly]
-    @role_id = attributes[:role_id]
-    @temperament = attributes[:temperament]
-  end
+  # def initialize attributes = {}
+  #   @name = attributes[:name]
+  #   @size = attributes[:size]
+  #   @lifespan = attributes[:lifespan]
+  #   @weight = attributes[:weight]
+  #   @height = attributes[:height]
+  #   @group = Group.find_by_id(attributes[:group_id])
+  #   @exercise = attributes[:exercise]
+  #   @grooming = attributes[:grooming]
+  #   @family_friendly = attributes[:family_friendly]
+  #   @role_id = attributes[:role_id]
+  #   @temperament = attributes[:temperament]
+  # end
 
   def to_s
     "#{id}. #{name}:\nSize: #{size}\nLifespan: #{lifespan}\nAverage Weight: #{weight}\nAverge Height: #{height}\nGroup: #{group.name}\nExercise: #{exercise}\nGrooming? #{grooming}\nFamily Friendly? #{family_friendly}\nTemperament: #{temperament}"
   end
 
-  def save
-    database = Environment.database_connection
-    database.execute("insert into breeds(name, size, lifespan, weight, height, group_id, exercise, grooming, family_friendly, role_id, temperament) values('#{name}', '#{size}', '#{lifespan}', '#{weight}', '#{height}', '#{group.id}', '#{exercise}', '#{grooming}', '#{family_friendly}', '#{role_id}', '#{temperament}')")
-    @id = database.last_insert_row_id
-  end
+  # def save
+  #   database = Environment.database_connection
+  #   database.execute("insert into breeds(name, size, lifespan, weight, height, group_id, exercise, grooming, family_friendly, role_id, temperament) values('#{name}', '#{size}', '#{lifespan}', '#{weight}', '#{height}', '#{group.id}', '#{exercise}', '#{grooming}', '#{family_friendly}', '#{role_id}', '#{temperament}')")
+  #   @id = database.last_insert_row_id
+  # end
 
-  def self.create(attributes = {})
-    breed = Breed.new(attributes)
-    breed.save
-    breed
-  end
+  # def self.create(attributes = {})
+  #   breed = Breed.new(attributes)
+  #   breed.save
+  #   breed
+  # end
 
   def self.find_by_name breed_name
     database = Environment.database_connection

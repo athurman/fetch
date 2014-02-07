@@ -4,15 +4,12 @@ require_relative '../lib/environment'
 class FetchTest < MiniTest::Unit::TestCase
   def setup
     Environment.environment = "test"
-  end
-
-  def database
-    Environment.environment = "test"
-    Environment.database_connection
+    Environment.connect_to_database
   end
 
   def teardown
-    database.execute("delete from shelterdogs")
+    # The Database Cleaner gem will do this for us:
+    # ShelterDog.destroy_all
   end
 
   def assert_command_output expected, command
