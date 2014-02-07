@@ -8,6 +8,18 @@ class Shelter
     end
   end
 
+  def save
+    database = Environment.database_connection
+    database.execute("insert into shelters(name, location, petfinder_id) values('#{name}', #{location}, '#{petfinder_id}')")
+    @id = database.last_insert_row_id
+  end
+
+  def self.create(attributes = {})
+    shelter = Shelter.new(attributes)
+    shelter.save
+    shelter
+  end
+
   def self.find_by_petfinder_id petfinder_id
     database = Environment.database_connection
     database.results_as_hash = true

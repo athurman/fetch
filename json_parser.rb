@@ -59,4 +59,21 @@ class JsonParser
       Group.create(group)
     end
   end
+
+  def self.parse_shelters
+    shelters = File.read("shelters.json")
+    parsed = JSON.parse(shelters)
+    parsed["petfinder"]["shelters"]["shelter"].each do |shelter_obj|
+      name =  shelter_obj["name"]["$t"]
+      name.each_char do |char|
+        if char == "'"
+          name.delete!(char)
+        end
+      end
+      location =  shelter_obj["zip"]["$t"].to_i
+      petfinder_id =  shelter_obj["id"]["$t"]
+
+      shelter = Shelter.create(name: name, location: location, petfinder_id: petfinder_id)
+    end
+  end
 end

@@ -29,13 +29,13 @@ db_namespace = namespace :db do
       file = ENV['SCHEMA'] || "db/schema.rb"
       if File.exists?(file)
         load(file)
-        puts "File Loaded"
       else
         abort %{#{file} doesn't exist yet. Run `rake db:migrate` to create it.}
       end
       JsonParser.parse_roles
       JsonParser.parse_groups
       JsonParser.parse_breeds
+      JsonParser.parse_shelters
     end
   end
   desc 'Rolls the schema back to the previous version (specify steps w/ STEP=n).'
