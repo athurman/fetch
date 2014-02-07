@@ -65,6 +65,7 @@ class ShelterDog
     database = Environment.database_connection
     database.results_as_hash = true
     results = database.execute("select * from shelterdogs where breed = '#{breed_name}' order by name ASC")
+    results_as_hash = false
     shelterdogs = []
     unless results.empty?
       row_hash = results
@@ -79,6 +80,11 @@ class ShelterDog
       end
     end
     shelterdogs
+  end
+
+  def self.count
+    database = Environment.database_connection
+    total = database.execute("select count(id) from shelterdogs")[0][0]
   end
 
   def self.create(attributes = {})

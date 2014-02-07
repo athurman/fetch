@@ -11,18 +11,21 @@ class TestEnteringDog < FetchTest
   def test_valid_dog_gets_saved
     `./fetchdog add Fido --breed Collie --shelter 'Humane Society' --age young --weight M --status A --environment test`
 
-    results = database.execute("select name, breed, shelter, age, weight, status from shelterdogs")
+    results = ShelterDog.find_by_breedname("Collie")
+    results = results[0]
     expected = ["Fido", "Collie", "Humane Society", "young", "M", "A"]
-    assert_equal expected, results[0]
-
-    result = database.execute("select count(id) from shelterdogs")
-    assert_equal 1, result[0][0]
+    assert_equal expected[0], results.name
+    assert_equal expected[1], results.breed
+    assert_equal expected[2], results.shelter
+    assert_equal expected[3], results.age
+    result = ShelterDog.count
+    assert_equal 1, result
   end
 
   def test_invalid_dog_does_not_get_saved
     `./fetchdog add Fido --breed Boxer`
-    result = database.execute("select count(id) from shelterdogs")
-    assert_equal 0, result[0][0]
+    result = ShelterDog.count
+    assert_equal 0, result
   end
 
   def test_error_message_for_missing_age

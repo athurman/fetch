@@ -14,9 +14,9 @@ class TestShelterDog < FetchTest
     fido = ShelterDog.new(name: "Fido", breed: "Collie",
                           shelter: "Humane Society", age: "young",
                           weight: "M", status: "A")
-    fido_before = database.execute("select count(id) from shelterdogs")[0][0]
+    fido_before = ShelterDog.count
     fido.save
-    fido_after = database.execute("select count(id) from shelterdogs")[0][0]
+    fido_after = ShelterDog.count
     assert_equal fido_before + 1, fido_after
   end
 
@@ -39,9 +39,9 @@ class TestShelterDog < FetchTest
     fido = ShelterDog.create(name: "Fido", breed: "Collie",
                              shelter: "Humane Society", age: "young",
                              weight: "M", status: "A")
-    dogs_before = database.execute("select count(id) from shelterdogs")[0][0]
+    dogs_before = ShelterDog.count
     fido.update("name", "Rover", "#{fido.id}")
-    dogs_after = database.execute("select count(id) from shelterdogs")[0][0]
+    dogs_after = ShelterDog.count
     assert_equal dogs_before, dogs_after
   end
 
@@ -52,9 +52,9 @@ class TestShelterDog < FetchTest
     spot = ShelterDog.create(name: "Spot", breed: "Cocker Spaniel",
                              shelter: "Humane Society", age: "young",
                              weight: "M", status: "A")
-    dogs_before = database.execute("select count(*) from shelterdogs")[0][0]
+    dogs_before = ShelterDog.count
     ShelterDog.delete(fido.id)
-    dogs_after = database.execute("select count(*) from shelterdogs")[0][0]
+    dogs_after = ShelterDog.count
     assert_equal dogs_before - 1, dogs_after
   end
 
