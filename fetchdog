@@ -37,7 +37,7 @@ class FetchDog
   def add_shelter_dog_to_db()
     error_messages = ParseArguments.validate(options)
     if error_messages.empty?
-      shelterdog = ShelterDog.new(options)
+      shelterdog = Shelterdog.new(options)
       shelterdog.save
       tell("A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}.")
     else
@@ -47,7 +47,7 @@ class FetchDog
 
   def list_shelterdogs()
     puts "All Shelter Dogs:"
-    puts ShelterDog.all
+    puts Shelterdog.all
   end
 
   def check_results results
@@ -91,7 +91,7 @@ class FetchDog
         tell("Thanks!")
         exit
       end
-      shelterdogs = ShelterDog.find_by_breedname(shelter_breed.name)
+      shelterdogs = Shelterdog.find_by_breedname(shelter_breed.name)
       check_results(shelterdogs)
       print_dogs(shelterdogs, shelter_breed.name)
   end
@@ -99,7 +99,7 @@ class FetchDog
   def update_shelter_dog_info_for searched_dog
     unless searched_dog == "The dog you were searching for is not found"
       id = ask("Please select the id of the dog you would like to update.")
-      shelterdog = ShelterDog.search_by_id(id)
+      shelterdog = Shelterdog.search_by_id(id)
       if shelterdog.nil?
         tell("No dogs were found with that id, please try again.")
       else
