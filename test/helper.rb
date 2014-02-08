@@ -9,7 +9,7 @@ class FetchTest < MiniTest::Unit::TestCase
 
   def teardown
     # The Database Cleaner gem will do this for us:
-    # ShelterDog.destroy_all
+    Shelterdog.destroy_all
   end
 
   def assert_command_output expected, command
