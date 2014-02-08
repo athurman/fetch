@@ -2,15 +2,15 @@ require_relative 'helper'
 
 class TestShelterDogDelete < FetchTest
   def test_deletes_all_dogs_with_name_fido_plus_id
-    fido1 = ShelterDog.create(name: "Fido", breed: "Standard Poodle",
+    fido1 = Shelterdog.create(name: "Fido", breed: "Standard Poodle",
                            shelter: "Humane Society", age: "adult",
                            weight: "M", status: "A")
     fido1_id = fido1.id
-    fido2 = ShelterDog.create(name: "Fido", breed: "Collie",
+    fido2 = Shelterdog.create(name: "Fido", breed: "Collie",
                            shelter: "Shamrock", age: "young",
                            weight: "M", status: "A")
     fido2_id = fido2.id
-    spot = ShelterDog.create(name: "Spot", breed: "Dalmation",
+    spot = Shelterdog.create(name: "Spot", breed: "Dalmation",
                              shelter: "Humane Society", age: "adult",
                              weight: "M", status: "A")
     spot_id = spot.id

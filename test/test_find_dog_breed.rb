@@ -2,10 +2,10 @@ require_relative 'helper'
 
 class TestFindDogBreed < FetchTest
   def test_find_australian_terriers_in_shelter_from_top_5_dog_breeds
-    fido1 = ShelterDog.create(name: "Fido", breed: "Australian Terrier",
+    fido1 = Shelterdog.create(name: "Fido", breed: "Australian Terrier",
                            shelter: "Humane Society", age: "adult",
                            weight: "M", status: "A")
-    fido2 = ShelterDog.create(name: "Fido", breed: "Appenzell Mountain Dog",
+    fido2 = Shelterdog.create(name: "Fido", breed: "Appenzell Mountain Dog",
                            shelter: "Shamrock", age: "young",
                            weight: "M", status: "A")
     shell_output = ""

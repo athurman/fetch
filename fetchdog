@@ -11,33 +11,35 @@ class FetchDog
   def initialize
     @options = ParseArguments.parse
     Environment.environment = @options[:environment] || "production"
+    @options.delete(:environment)
   end
 
   def main
-    if options[:command].nil?
+    Environment.connect_to_database
+    command = options.delete(:command)
+    if command.nil?
       print_logo()
       find_dog_breeds_and_return_shelter_dogs()
-    elsif options[:command] == "add"
+    elsif command == "add"
       add_shelter_dog_to_db()
-    elsif options[:command] == "list"
+    elsif command == "list"
       print_logo()
       list_shelterdogs()
-    elsif options[:command] == "update"
-      searched_dog = ShelterDog.search_by_name(options[:name])
+    elsif command == "update"
+      searched_dog = Shelterdog.find_by(name: options[:name])
       update_shelter_dog_info_for(searched_dog)
-    elsif options[:command] == "delete"
+    elsif command == "delete"
       dog_id = ask("Please type the id of the dog named #{options[:name]} that you would like to delete")
-      ShelterDog.delete(dog_id)
+      dog = Shelterdog.find_by(id: dog_id)
+      dog.destroy
       tell("Dog #{dog_id}. #{options[:name]} has beend deleted from the shelterdogs table")
-    else
-      tell("Command not implemented")
     end
   end
 
   def add_shelter_dog_to_db()
     error_messages = ParseArguments.validate(options)
     if error_messages.empty?
-      shelterdog = Shelterdog.new(options)
+      shelterdog = Shelterdog.create(options)
       shelterdog.save
       tell("A shelter dog named #{options[:name]}, breed: #{options[:breed]}, shelter: #{options[:shelter]}, age: #{options[:age]} weight: #{options[:weight]} lbs. with status of #{options[:status]}.")
     else
@@ -60,7 +62,7 @@ class FetchDog
   def print_dogs(dog_array, breed_name= "dog")
     if dog_array[0].is_a?(Breed)
       puts "Here are the top 10 dog breeds that fit your lifestyle:"
-    elsif dog_array[0].is_a?(ShelterDog)
+    elsif dog_array[0].is_a?(Shelterdog)
       puts
       puts "Here are #{breed_name}s in the surrounding area:"
     end
@@ -91,26 +93,37 @@ class FetchDog
         tell("Thanks!")
         exit
       end
-      shelterdogs = Shelterdog.find_by_breedname(shelter_breed.name)
+      shelterdogs = Shelterdog.where(breed: shelter_breed.name)
       check_results(shelterdogs)
       print_dogs(shelterdogs, shelter_breed.name)
   end
 
   def update_shelter_dog_info_for searched_dog
-    unless searched_dog == "The dog you were searching for is not found"
-      id = ask("Please select the id of the dog you would like to update.")
-      shelterdog = Shelterdog.search_by_id(id)
-      if shelterdog.nil?
-        tell("No dogs were found with that id, please try again.")
-      else
-        tell(shelterdog)
-        selection = ask("Please select the piece of information you would like to update (age, status, etc.).")
-        updated_info = ask("What would you like to change the dog's #{selection} to?")
-        shelterdog = shelterdog.update(selection, updated_info, id)
-        tell("Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}")
-      end
+    id = ask("Please select the id of the dog you would like to update.")
+    shelterdog = Shelterdog.find_by(id: id)
+    if shelterdog.nil?
+      tell("No dogs were found with that id, please try again.")
     else
-      tell(searched_dog)
+      tell(shelterdog)
+      selection = ask("Please select the piece of information you would like to update (age, status, etc.).")
+      updated_info = ask("What would you like to change the dog's #{selection} to?")
+      if selection == 'name'
+        shelterdog.update(name: updated_info)
+      elsif selection == 'breed'
+        shelterdog.update(breed: updated_info)
+      elsif selection == 'shelter'
+        shelterdog.update(shelter: updated_info)
+      elsif selection == 'age'
+        shelterdog.update(age: updated_info)
+      elsif selection == 'weight'
+        shelterdog.update(weight: updated_info)
+      elsif selection == 'status'
+        shelterdog.update(status: updated_info)
+      else
+        puts "That is not an option, please try again"
+        exit
+      end
+      tell("Dog #{shelterdog.id} is now named #{shelterdog.name}, breed is #{shelterdog.breed}, shelter is #{shelterdog.shelter}, age is #{shelterdog.age}, weight is #{shelterdog.weight}, and status is #{shelterdog.status}")
     end
   end
 

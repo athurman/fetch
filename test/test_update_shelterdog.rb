@@ -2,11 +2,11 @@ require_relative 'helper'
 
 class TestUpdateShelterDog < FetchTest
   def test_lists_all_dogs_with_name_fido_plus_id
-    fido1 = ShelterDog.create(name: "Fido", breed: "Standard Poodle",
+    fido1 = Shelterdog.create(name: "Fido", breed: "Standard Poodle",
                            shelter: "Humane Society", age: "adult",
                            weight: "M", status: "A")
     fido1_id = fido1.id
-    fido2 = ShelterDog.create(name: "Fido", breed: "Collie",
+    fido2 = Shelterdog.create(name: "Fido", breed: "Collie",
                            shelter: "Shamrock", age: "young",
                            weight: "M", status: "A")
     fido2_id = fido2.id
@@ -23,11 +23,11 @@ class TestUpdateShelterDog < FetchTest
   end
 
   def test_message_given_when_wrong_id_input_by_user
-     fido1 = ShelterDog.create(name: "Fido", breed: "Standard Poodle",
+     fido1 = Shelterdog.create(name: "Fido", breed: "Standard Poodle",
                            shelter: "Humane Society", age: "adult",
                            weight: "M", status: "A")
     fido1_id = fido1.id
-    fido2 = ShelterDog.create(name: "Fido", breed: "Collie",
+    fido2 = Shelterdog.create(name: "Fido", breed: "Collie",
                            shelter: "Shamrock", age: "young",
                            weight: "M", status: "A")
     fido2_id = fido2.id

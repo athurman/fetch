@@ -2,13 +2,13 @@ require_relative 'helper'
 
 class TestListingShelterDogs < FetchTest
   def test_lists_all_results
-    fido = ShelterDog.create(name: "Fido", breed: "Collie",
+    fido = Shelterdog.create(name: "Fido", breed: "Collie",
                              shelter: "Humane Society", age: "young",
                              weight: "M", status: "A")
-    spot = ShelterDog.create(name: "Spot", breed: "Dalmation",
+    spot = Shelterdog.create(name: "Spot", breed: "Dalmation",
                              shelter: "Humane Society", age: "adult",
                              weight: "M", status: "A")
-    rover = ShelterDog.create(name: "Rover", breed: "Boxer",
+    rover = Shelterdog.create(name: "Rover", breed: "Boxer",
                               shelter: "Humane Society", age: "young",
                               weight: "M", status: "A")
 
