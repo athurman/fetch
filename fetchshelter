@@ -3,9 +3,6 @@
 require_relative 'lib/environment'
 require_relative 'lib/parse_arguments'
 require_relative 'lib/interactions'
-require_relative 'models/shelter'
-require_relative 'models/breed'
-require_relative 'models/role'
 
 class FetchShelter
   include Interactions
@@ -14,10 +11,12 @@ class FetchShelter
   def initialize
     @options = ParseArguments.parse
     Environment.environment = @options[:environment] || "production"
+    @options.delete(:environment)
   end
 
   def main
-    zipcode = options[:command]
+    Environment.connect_to_database
+    zipcode = options.delete(:command)
     if zipcode.nil?
       tell("You must enter a zipcode to search shelters")
       exit
@@ -27,11 +26,12 @@ class FetchShelter
   end
 
   def print_shelter_stats zipcode
-    shelters = Shelter.find_by_location(zipcode.to_i)
+    shelters = Shelter.where(location: zipcode.to_i)
     shelter = give_options("Please select the shelter you would like stats on:", shelters)
+    puts shelter
     total_dogs = Shelter.calculate_total_dogs(shelter.petfinder_id)
     popular_breed = Shelter.calculate_popular_breed(shelter.petfinder_id)
-    total_popular = popular_breed["Count(*)"]
+    total_popular = popular_breed["total"]
     popular_breed = popular_breed["breed"]
     adoption_rate = Shelter.calculate_rate(shelter.petfinder_id, "X")
     pending_rate = Shelter.calculate_rate(shelter.petfinder_id, "P")

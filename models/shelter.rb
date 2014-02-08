@@ -3,7 +3,7 @@ class Shelter < ActiveRecord::Base
 
   def self.calculate_popular_breed id
     results = Shelterdog.find_by_sql("select shelterdogs.breed, Count(*) as total from shelterdogs where shelterdogs.shelter = '#{id}' group by shelterdogs.breed order by total desc")
-    results[0]
+    results
   end
 
   def self.calculate_total_dogs id

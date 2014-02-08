@@ -2,7 +2,8 @@ require 'httparty'
 require 'json'
 require_relative './lib/environment.rb'
 
-environment = Environment.environment = "test"
+environment = Environment.environment = "production"
+Environment.connect_to_database
 
 puts environment
 
